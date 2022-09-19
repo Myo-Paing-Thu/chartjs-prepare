@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+</head>
+
+<body>
+    <div style="max-height: 300px; overflow-y: scroll; max-width: 50vw;">
+        <div style="height: 3000px;">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <script>
+        var ctx = document.getElementById('myChart').getContext("2d");
+        const month = {
+            1: 4,
+            2: 5,
+            3: 6,
+            4: 7,
+            5: 8,
+            6: 9,
+            7: 10,
+            8: 11,
+            9: 12,
+            10: 1,
+            11: 2,
+            12: 3,
+            13: 4,
+            14: 5,
+            15: 6,
+            16: 7,
+            17: 8,
+            18: 9,
+            19: 10,
+            20: 11,
+            21: 12,
+            22: 1,
+            23: 2,
+            24: 3,
+            25: 4,
+            26: 5,
+            27: 6,
+            28: 7,
+            29: 8,
+            30: 9,
+            31: 10,
+            32: 11,
+            33: 12,
+            34: 1,
+            35: 2,
+            36: 3,
+        }
+
+        // setup 
+        const data = {
+            labels: ['Mon', 'Tue', 'Wed', 'Mon', 'Tue'],
+            custom_title: ['英単語', '英文法', '倫理、政治・経済'],
+            custom_labels: ['英単語ターゲット1400 4訂版', 'システム英単語 〈改訂新版〉', 'システム英単語'],
+            datasets: [
+                {
+                    label: 'Weekly Sales',
+                    data: [
+                        [1, 2],
+                        [4, 10],
+                        [20, 31]
+                    ],
+                    backgroundColor: 'rgba(255, 26, 77, 1)',
+                    borderColor: [
+                        'rgba(255, 26, 77, 1)',
+                    ],
+                    borderWidth: 50,
+                    borderSkipped: true
+                },
+            ]
+        };
+
+        // config 
+        const config = {
+            type: 'bar',
+            plugins: [ChartDataLabels],
+            data,
+            options: {
+                aspectRatio: 1 / 1,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            display: false,
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false,
+                        },
+                        beginAtZero: true,
+                        reverse: true,
+                        min: 1,
+                        max: 36,
+                        ticks: {
+                            callback: function (value, index) {
+                                return month[value];
+                            },
+                            stepSize: 1,
+                            font: {
+                                size: 8,
+                            }
+                        },
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: {
+                                size: 8
+                            }
+                        }
+                    },
+                    tooltip: {
+                        enabled: false
+                    },
+                    datalabels: {
+                        labels: {
+                            title: {
+                                anchor: 'end',
+                                align: 'start',
+                                borderWidth: 1,
+                                borderRadius: 5,
+                                borderColor: 'white',
+                                formatter: function (value, context) {
+                                    return context.chart.data.custom_title[context.dataIndex].match(/.{1,9}/g);
+                                }
+                            },
+                            value: {
+                                anchor: 'end',
+                                align: 'start',
+                                offset: 30,
+                                color: 'blue',
+                                formatter: function (value, context) {
+                                    return context.chart.data.custom_labels[context.dataIndex].match(/.{1,9}/g);
+                                }
+                            }
+                        },
+                        color: 'white',
+                        font: {
+                            size: 8,
+                        },
+                    }
+                }
+            }
+        };
+
+        const myChart = new Chart(
+            ctx,
+            config
+        );
+    </script>
+</body>
+
+</html>
